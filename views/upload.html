@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashbooard</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #3498DB; 
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin:20px 0;
+    padding: 12px 20px;
+    border-bottom: 2px solid transparent;
+    transition: background 0.3s, color 0.3s, border-bottom 0.3s;
+}
+
+nav a.active, nav a:hover {
+    background-color: #ffffff;
+    color: #3498DB;
+    border-radius: 4px;
+}
+
+.logo{
+    height: 100px;
+    width:100px;
+    overflow: hidden;
+    margin-top:0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+  margin-left: 200px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y:scroll;
+  background-color: white;
+}
+
+header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px 20px;
+     background-color: #3498DB;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .headerlogo {
+     font-size: 1.5rem;
+     font-weight: bold;
+ }
+
+ .search-bar {
+     flex-grow: 0;
+     width: 300px; 
+     margin: 0 20px;
+     position: relative;
+ }
+
+ .search-bar input[type="text"] {
+     width: 100%;
+     padding: 8px 12px;
+     border-radius: 20px;
+     border: none;
+     outline: none;
+ }
+
+ .header-buttons {
+     display: flex;
+     gap: 15px;
+ }
+
+ .header-buttons button {
+     background-color: transparent;
+     border: none;
+     color: white;
+     cursor: pointer;
+     font-size: 1.2rem;
+     position: relative;
+ }
+
+ .header-buttons button:hover {
+     color: #000000;
+ }
+
+ .header-buttons button:focus {
+     outline: none;
+ }
+
+ .header-buttons button i {
+     font-size: 1.4rem;
+ }
+
+ .notification-count {
+     position: absolute;
+     top: -6px;
+     right: -6px;
+     background-color: #ff6347;
+     color: white;
+     border-radius: 50%;
+     width: 18px;
+     height: 18px;
+     font-size: 0.75rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .upload-section {
+    margin-top: 24px;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.upload-section h2 {
+    color: #3498DB;
+    font-size: 1.44rem;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.left-column {
+    float: left;
+    width: 48%; 
+}
+
+.right-column {
+    float: right;
+    width: 48%; 
+}
+
+.file-upload label {
+    display: block;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    color: #3498DB;
+    font-weight: bold;
+}
+
+.file-upload select {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.8rem;
+    border: 1px solid #3498DB;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    background-color: #f7f9fc;
+    color: #333;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.file-upload select:focus {
+    border-color: #3498DB;
+    box-shadow: 0px 0px 6px rgba(68, 139, 233, 0.5);
+    outline: none;
+}
+
+.upload-area {
+    border: 1.6px dashed #3498DB;
+    padding: 24px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    color: #3498DB;
+    font-size: 0.96rem;
+    background-color: #f7f9fc;
+    transition: background 0.3s, color 0.3s;
+}
+
+.upload-area:hover {
+    background: #3498DB;
+    color: #ffffff;
+}
+
+.file-preview {
+    margin-top: 16px;
+    display: block;
+}
+
+.file-preview iframe {
+    width: 100%;
+    height: 560px;
+    border: none;
+    border-radius: 8px;
+}
+
+.drag-drop-box {
+    width: 100%;
+    height: 237.6mm;
+    background-color: #f7f9fc;
+    border: 1.6px dashed #3498DB;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #3498DB;
+    margin-bottom: 16px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.drag-drop-box:hover {
+    background: #3498DB;
+    color: #ffffff;
+}
+
+.progress {
+    margin-top: 16px;
+}
+
+.progress-bar {
+    width: 0;
+    height: 16px;
+    background-color: #3498DB;
+    border-radius: 8px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 16px;
+    font-size: 0.72rem;
+}
+
+.upload-button {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.upload-button button {
+    background: #3498DB;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-button button:hover {
+    background: #0270b9;
+}
+
+#clearButton {
+    background: #3498DB;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#clearButton:hover{
+    background: #0270b9;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <div class="container">
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="Laspotech"/>
+            </div>
+                <a href="/admin">Dashboard</a>
+                <a href="/students">Students</a>
+                <a href="/upload" class="active">Upload Result</a>
+                <a href="/api/logout">Logout</a>
+        </nav>
+
+        <div class="content">
+            <header>
+
+                <div class="headerlogo">Computer Science Department</div>
+            
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                </div>
+            
+                <div class="header-buttons">
+                    <button id="notificationBtn">
+                        <i class="fas fa-bell"></i> 
+                        <span class="notification-count">3</span>
+                    </button>
+                    <button id="settingsBtn">
+                        <i class="fas fa-cog"></i> 
+                    </button>
+                </div>
+
+            </header>
+
+            <div class="upload-section clearfix">
+                <div class="left-column">
+                    <h2>Upload Student Results</h2>
+                    <form id="uploadForm">
+                        <div class="file-upload">
+                            <label for="levelSelect">Select Level</label>
+                            <select id="levelSelect" name="level">
+                                <option value="select level">Select Level</option>
+                                <option value="100_level">100 Level</option>
+                                <option value="200_level">200 Level</option>
+                                <option value="300_level">300 Level</option>
+                                <option value="400_level">400 Level</option>
+                            </select>
+    
+                            <label for="studentSelect">Select Student</label>
+                            <select id="studentSelect" name="matricNumber">
+                                
+                            </select>
+    
+                            <label for="semesterSelect">Select Semester</label>
+                            <select id="semesterSelect" name="semester">
+                                <option value="1">1st Semester</option>
+                                <option value="2">2nd Semester</option>
+                            </select>
+    
+                            <input type="file" id="fileInput" name="file" style="display: none;">
+                            <div id="uploadArea" class="upload-area">
+                                <span id="fileDetails">Choose file...</span>
+                            </div>
+                            <div class="upload-button">
+                                <button type="button" id="uploadButton">Upload</button>
+                                <!-- Clear Form Button -->
+                                <button type="button" id="clearButton">Clear Form</button>
+                            </div>
+                            <div id="progress" class="progress">
+                                <div id="progressBar" class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="right-column">
+                    <div id="filePreview" class="file-preview">
+                        <iframe id="pdfPreview"></iframe>
+                    </div>
+                </div>
+            </div>
+            
+        </div><!--content-->
+  </div><!--container-->
+  
+  <script src="upload.js"></script>
+  <script>
+    document.getElementById('clearButton').addEventListener('click', () => {
+        document.getElementById('uploadForm').reset();
+        document.getElementById('fileDetails').textContent = 'Choose file...';
+        document.getElementById('pdfPreview').src = 'about:blank'; 
+        document.getElementById('progressBar').style.width = '0%'; 
+    });
+</script>
+
+</body>
+</html>

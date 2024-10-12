@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students by Level</title>
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #3498DB; 
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin:20px 0;
+    padding: 12px 20px;
+    border-bottom: 2px solid transparent;
+    transition: background 0.3s, color 0.3s, border-bottom 0.3s;
+}
+
+nav a.active, nav a:hover {
+    background-color: #ffffff;
+    color: #3498DB;
+    border-radius: 4px;
+}
+
+.logo{
+    height: 100px;
+    width:100px;
+    overflow: hidden;
+    margin-top:0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+  margin-left: 200px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y:scroll;
+  background-color: white;
+}
+
+header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px 20px;
+     background-color: #3498DB;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .headerlogo {
+     font-size: 1.5rem;
+     font-weight: bold;
+ }
+
+ .search-bar {
+     flex-grow: 0;
+     width: 300px; 
+     margin: 0 20px;
+     position: relative;
+ }
+
+ .search-bar input[type="text"] {
+     width: 100%;
+     padding: 8px 12px;
+     border-radius: 20px;
+     border: none;
+     outline: none;
+ }
+
+ .header-buttons {
+     display: flex;
+     gap: 15px;
+ }
+
+ .header-buttons button {
+     background-color: transparent;
+     border: none;
+     color: white;
+     cursor: pointer;
+     font-size: 1.2rem;
+     position: relative;
+ }
+
+ .header-buttons button:hover {
+     color: #000000;
+ }
+
+ .header-buttons button:focus {
+     outline: none;
+ }
+
+ .header-buttons button i {
+     font-size: 1.4rem;
+ }
+
+ .notification-count {
+     position: absolute;
+     top: -6px;
+     right: -6px;
+     background-color: #ff6347;
+     color: white;
+     border-radius: 50%;
+     width: 18px;
+     height: 18px;
+     font-size: 0.75rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .upload-section{
+        margin-top: 10px;
+    }
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensures rounded corners apply to the whole table */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    color: #333; /* Dark text for readability */
+}
+
+th {
+    background-color: #3498DB; /* Blue tone for table header */
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f2f7fb; /* Light background for table cells */
+    word-break: break-word;
+}
+
+tr:nth-child(even) {
+    background-color: #e9f1f8; /* Alternating row color */
+}
+
+/* Hover effects */
+tr:hover {
+    background-color: #dceaf3;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: width 0.3s ease;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Modal box shadow */
+    border-radius: 10px; /* Modal rounded corners */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Buttons */
+.view-btn {
+    padding: 5px 7px;
+    background-color: #3498DB; /* Main blue tone */
+    color: white;
+    border: none;
+    border-radius: 50px; /* Rounded, pill-shaped button */
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.view-btn:hover {
+    background-color: #2980b9; /* Darker blue for hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Elevated effect on hover */
+}
+
+.view-btn:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: width 0.4s ease, height 0.4s ease, top 0.4s ease, left 0.4s ease;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+}
+
+.view-btn:hover:before {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+}
+
+.view-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Custom student details modal */
+.student-details h3 {
+    color: #3498DB;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Responsive iframe container */
+.iframe-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.iframe-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.iframe-wrapper iframe {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+.hidden{
+    display: none;
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="Laspotech"/>
+            </div>
+                <a href="/admin">Dashboard</a>
+                <a href="/students" class="active">Students</a>
+                <a href="/upload">Upload Result</a>
+                <a href="/api/logout">Logout</a>
+        </nav>
+
+        <div class="content">
+            <header>
+
+                <div class="headerlogo">Computer Science Department</div>
+            
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                </div>
+            
+                <div class="header-buttons">
+                    <button id="notificationBtn">
+                        <i class="fas fa-bell"></i> 
+                        <span class="notification-count">3</span>
+                    </button>
+                    <button id="settingsBtn">
+                        <i class="fas fa-cog"></i> 
+                    </button>
+                </div>
+
+            </header>
+
+            <div class="upload-section">
+
+<h1 style="margin-bottom: 10px;">Students List by Level</h1>
+
+<h2>Level 100</h2>
+<table id="level-100-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Matric Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Level</th>
+            <th>Semester</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody id="level-100-body">
+        <!-- Student rows for level 100 will be added here dynamically -->
+    </tbody>
+</table>
+
+<h2>Level 200</h2>
+<table id="level-200-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Matric Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Level</th>
+            <th>Semester</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody id="level-200-body">
+        <!-- Student rows for level 100 will be added here dynamically -->
+    </tbody>
+</table>
+
+<h2>Level 300</h2>
+<table id="level-300-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Matric Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Level</th>
+            <th>Semester</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody id="level-300-body">
+        <!-- Student rows for level 100 will be added here dynamically -->
+    </tbody>
+</table>
+
+<h2>Level 400</h2>
+<table id="level-400-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Matric Number</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Level</th>
+            <th>Semester</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody id="level-400-body">
+        <!-- Student rows for level 100 will be added here dynamically -->
+    </tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+<!-- Modal for viewing results -->
+<div id="result-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <h2>Results</h2>
+        <div id="result-content">
+            <!-- PDF preview will be added here dynamically -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to fetch students data by level and display in table
+    async function fetchStudentsByLevel(level) {
+        try {
+            const response = await fetch(`/students/${level}`);
+            const students = await response.json();
+            const tbody = document.getElementById(`level-${level}-body`);
+            tbody.innerHTML = '';  // Clear existing rows
+            
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.matric_number}</td>
+                    <td>${student.email}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.address}</td>
+                    <td>${student.level}</td>
+                    <td>${student.semester}</td>
+                    <td><button class="view-btn" onclick="viewResults('${student._id}', ${student.level}, '${student.name}', '${student.matric_number}')">View</button></td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error(`Error fetching students for level ${level}:`, error);
+        }
+    }
+
+    // Function to fetch results and show in modal as a PDF preview
+    async function viewResults(studentId, level, studentName, matricNumber) {
+        try {
+            const response = await fetch(`/results/${studentId}/${level}`);
+            const results = await response.json();
+            const modal = document.getElementById('result-modal');
+            const resultContent = document.getElementById('result-content');
+            resultContent.innerHTML = '';  // Clear existing content
+            modal.classList.remove('wide-modal');  // Reset modal width initially
+
+            // Add student name and matric number at the top of the modal
+            const studentDetails = `
+                <div class="student-details">
+                    <h3>${studentName} - ${matricNumber}</h3>
+                </div>
+            `;
+            resultContent.innerHTML = studentDetails;  // Insert the student details
+
+            if (results.length > 0) {
+                const semesters = { 1: null, 2: null };
+                results.forEach(result => {
+                    semesters[result.semester] = result.result_url;
+                });
+
+                if (semesters[1] && semesters[2]) {
+                    // Both semesters available, make modal wider and show view buttons for both
+                    modal.classList.add('wide-modal');
+                    resultContent.innerHTML += `
+                        <div class="iframe-container">
+                            <div class="iframe-wrapper">
+                                <button class="view-btn" onclick="toggleIframe(1)">View Semester 1</button>
+                                <iframe id="iframe-semester-1" src="${semesters[1]}" title="Semester 1 PDF" class="hidden"></iframe>
+                            </div>
+                            <div class="iframe-wrapper">
+                                <button class="view-btn" onclick="toggleIframe(2)">View Semester 2</button>
+                                <iframe id="iframe-semester-2" src="${semesters[2]}" title="Semester 2 PDF" class="hidden"></iframe>
+                            </div>
+                        </div>
+                    `;
+                } else if (semesters[1]) {
+                    // Only Semester 1 available
+                    resultContent.innerHTML += `
+                        <div class="iframe-container">
+                            <div class="iframe-wrapper">
+                                <button class="view-btn" onclick="toggleIframe(1)">View Semester 1</button>
+                                <iframe id="iframe-semester-1" src="${semesters[1]}" title="Semester 1 PDF" class="hidden"></iframe>
+                            </div>
+                        </div>
+                    `;
+                } else if (semesters[2]) {
+                    // Only Semester 2 available
+                    resultContent.innerHTML += `
+                        <div class="iframe-container">
+                            <div class="iframe-wrapper">
+                                <button class="view-btn" onclick="toggleIframe(2)">View Semester 2</button>
+                                <iframe id="iframe-semester-2" src="${semesters[2]}" title="Semester 2 PDF" class="hidden"></iframe>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML += '<p>No results available.</p>';
+                }
+            } else {
+                resultContent.innerHTML += '<p>No results available.</p>';
+            }
+
+            // Show the modal
+            modal.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching results:', error);
+        }
+    }
+
+    // Function to toggle iframe visibility
+    function toggleIframe(semester) {
+        const iframe = document.getElementById(`iframe-semester-${semester}`);
+        iframe.classList.toggle('hidden');
+    }
+
+    // Close modal logic
+    document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('result-modal').style.display = 'none';
+    });
+
+    // Fetch students for each level
+    fetchStudentsByLevel(100);
+    fetchStudentsByLevel(200);
+    fetchStudentsByLevel(300);
+    fetchStudentsByLevel(400);
+
+</script>
+</body>
+</html>

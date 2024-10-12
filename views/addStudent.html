@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashbooard</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #3498DB; 
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin:20px 0;
+    padding: 12px 20px;
+    border-bottom: 2px solid transparent;
+    transition: background 0.3s, color 0.3s, border-bottom 0.3s;
+}
+
+nav a.active, nav a:hover {
+    background-color: #ffffff;
+    color: #3498DB;
+    border-radius: 4px;
+}
+
+.logo{
+    height: 100px;
+    width:100px;
+    overflow: hidden;
+    margin-top:0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+  margin-left: 200px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y:scroll;
+  background-color: white;
+}
+
+header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px 20px;
+     background-color: #3498DB;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .headerlogo {
+     font-size: 1.5rem;
+     font-weight: bold;
+ }
+
+ .search-bar {
+     flex-grow: 0;
+     width: 300px; 
+     margin: 0 20px;
+     position: relative;
+ }
+
+ .search-bar input[type="text"] {
+     width: 100%;
+     padding: 8px 12px;
+     border-radius: 20px;
+     border: none;
+     outline: none;
+ }
+
+ .header-buttons {
+     display: flex;
+     gap: 15px;
+ }
+
+ .header-buttons button {
+     background-color: transparent;
+     border: none;
+     color: white;
+     cursor: pointer;
+     font-size: 1.2rem;
+     position: relative;
+ }
+
+ .header-buttons button:hover {
+     color: #000000;
+ }
+
+ .header-buttons button:focus {
+     outline: none;
+ }
+
+ .header-buttons button i {
+     font-size: 1.4rem;
+ }
+
+ .notification-count {
+     position: absolute;
+     top: -6px;
+     right: -6px;
+     background-color: #ff6347;
+     color: white;
+     border-radius: 50%;
+     width: 18px;
+     height: 18px;
+     font-size: 0.75rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ /* Form Styles */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #357abd;
+}
+
+#add{
+    text-align: center;
+    margin: 20px;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%; /* Make sure the wrapper takes up full width */
+    display: inline-block;
+}
+
+.password-wrapper input {
+    width: 100%; /* Ensure the input takes full width */
+    padding-right: 40px; /* Add padding to make space for the eye icon */
+    padding-left: 10px;
+    box-sizing: border-box; /* Keep padding from shrinking the input */
+}
+
+.toggle-password {
+    position: absolute;
+    top: 65%;
+    bottom: auto;
+    right: 12px; /* Adjust based on padding */
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #3498DB; /* Consistent with the blue theme */
+}
+
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <div class="container">
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="Laspotech"/>
+            </div>
+                <a href="/admin">Dashboard</a>
+                <a href="/students">Students</a>
+                <a href="/upload">Upload Result</a>
+                <a href="/api/logout">Logout</a>
+        </nav>
+
+        <div class="content">
+            <header>
+
+                <div class="headerlogo">Computer Science Department</div>
+            
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                </div>
+            
+                <div class="header-buttons">
+                    <button id="notificationBtn">
+                        <i class="fas fa-bell"></i> 
+                        <span class="notification-count">3</span>
+                    </button>
+                    <button id="settingsBtn">
+                        <i class="fas fa-cog"></i> 
+                    </button>
+                </div>
+
+            </header>
+
+            <h1 id="add">Add Student</h1>
+        <form id="addStudentForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="matricNumber">Matric Number:</label>
+            <input type="text" id="matricNumber" name="matricNumber" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required><br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br>
+
+            <label for="level">Level:</label>
+            <input type="number" id="level" name="level" required><br>
+
+            <label for="semester">Semester:</label>
+            <input type="number" id="semester" name="semester" required><br>
+
+            <div class="password-wrapper">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <span class="toggle-password">
+                    <i class="fas fa-eye" id="eyeIcon"></i> <!-- Font Awesome Eye Icon -->
+                </span>
+            </div>
+            
+            <button type="submit">Add Student</button>
+        </form>
+
+        </div><!--content-->
+  </div><!--container-->
+ <script src="addStudent.js"></script> <!-- Link to your JavaScript file -->
+    <script>
+        // JavaScript to show/hide password
+        document.getElementById("eyeIcon").addEventListener("click", function() {
+    var passwordInput = document.getElementById("password");
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash"); // Change to eye-slash when password is shown
+    } else {
+        passwordInput.type = "password";
+        this.classList.remove("fa-eye-slash");
+        this.classList.add("fa-eye"); // Revert to eye icon when password is hidden
+    }
+});
+
+
+
+        // Prevent form submission when pressing Enter
+        document.getElementById('addStudentForm').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>

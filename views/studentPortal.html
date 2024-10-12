@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #4a90e2;
+}
+
+h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #e9eff1;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+ul li a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#studentName, #matricNumber {
+    font-weight: bold;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, <span id="studentName"></span></h2>
+        <p>Matriculation Number: <span id="matricNumber"></span></p>
+        <h3>Results</h3>
+        <ul id="resultsList">
+            <!-- Results will be populated here -->
+        </ul>
+        <a href="/api/logout">Logout</a>
+    </div>
+
+    <script>
+        // Fetch student data from the session
+        fetch('/api/student-data')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('studentName').textContent = data.name;
+                document.getElementById('matricNumber').textContent = data.matric_number;
+                const resultsList = document.getElementById('resultsList');
+                data.results.forEach(result => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `Level: ${result.level}, Semester: ${result.semester} - <a href="${result.result_url}">Download Result</a>`;
+                    resultsList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

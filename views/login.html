@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #8f79cc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            width: 400px;
+            padding: 0;
+            background-color: #f2f2f2;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container img {
+            display: block;
+            margin: 20px auto 0 auto;
+            max-width: 80%;
+            height: auto;
+        }
+
+        .form-container fieldset {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+        .form-container legend {
+            padding: 0 10px;
+            font-weight: bold;
+            color: #0073e6;
+        }
+
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .form-container .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        #adminForm {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #studentForm {
+            display: block;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .toggle-button {
+            background-color: #555;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 3px;
+            padding: 5px 10px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .toggle-button:hover {
+            background-color: #333;
+        }
+
+        .forgot-password {
+            font-size: 12px;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .forgot-password a {
+            color: #0073e6;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container" id="studentForm">
+    <img src="lasustech.png" alt="Lagos State Polytechnic Logo">
+    <fieldset>
+        <legend>Enter your Matric No and Password</legend>
+        <form action="/api/login" method="POST">
+            <input type="hidden" name="userType" value="student">
+            <label for="matric_number">Username:</label>
+            <input type="text" id="matric_number" name="matric_number" placeholder="Enter your Matric No or Bursary No" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <div class="actions">
+                <button type="submit">Sign In</button>
+                <div class="forgot-password">
+                    <a href="#">Forget your password?</a>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+    <a class="toggle-button" onclick="toggleForm()">Admin Login</a>
+</div>
+
+<div class="form-container" id="adminForm">
+    <img src="lasustech.png" alt="Lagos State Polytechnic Logo">
+    <fieldset>
+        <legend>Enter your Username and Password</legend>
+        <form action="/api/login" method="POST">
+            <input type="hidden" name="userType" value="admin">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <div class="actions">
+                <button type="submit">Sign In</button>
+                <div class="forgot-password">
+                    <a href="#">Forget your password?</a>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+    <a class="toggle-button" onclick="toggleForm()">Student Login</a>
+</div>
+
+<script>
+    function toggleForm() {
+        const studentForm = document.getElementById('studentForm');
+        const adminForm = document.getElementById('adminForm');
+
+        if (studentForm.style.display === "none") {
+            adminForm.style.opacity = 0;
+            setTimeout(() => {
+                adminForm.style.display = "none";
+                studentForm.style.display = "block";
+                studentForm.style.opacity = 1;
+            }, 500);
+        } else {
+            studentForm.style.opacity = 0;
+            setTimeout(() => {
+                studentForm.style.display = "none";
+                adminForm.style.display = "block";
+                adminForm.style.opacity = 1;
+            }, 500);
+        }
+    }
+</script>
+
+</body>
+</html>

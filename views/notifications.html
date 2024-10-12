@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashbooard</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #3498DB; 
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin:20px 0;
+    padding: 12px 20px;
+    border-bottom: 2px solid transparent;
+    transition: background 0.3s, color 0.3s, border-bottom 0.3s;
+}
+
+nav a.active, nav a:hover {
+    background-color: #ffffff;
+    color: #3498DB;
+    border-radius: 4px;
+}
+
+.logo{
+    height: 100px;
+    width:100px;
+    overflow: hidden;
+    margin-top:0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+  margin-left: 200px;
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y:scroll;
+  background-color: white;
+}
+
+header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px 20px;
+     background-color: #3498DB;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .headerlogo {
+     font-size: 1.5rem;
+     font-weight: bold;
+ }
+
+ .search-bar {
+     flex-grow: 0;
+     width: 300px; 
+     margin: 0 20px;
+     position: relative;
+ }
+
+ .search-bar input[type="text"] {
+     width: 100%;
+     padding: 8px 12px;
+     border-radius: 20px;
+     border: none;
+     outline: none;
+ }
+
+ .header-buttons {
+     display: flex;
+     gap: 15px;
+ }
+
+ .header-buttons button {
+     background-color: transparent;
+     border: none;
+     color: white;
+     cursor: pointer;
+     font-size: 1.2rem;
+     position: relative;
+ }
+
+ .header-buttons button:hover {
+     color: #000000;
+ }
+
+ .header-buttons button:focus {
+     outline: none;
+ }
+
+ .header-buttons button i {
+     font-size: 1.4rem;
+ }
+
+ .notification-count {
+     position: absolute;
+     top: -6px;
+     right: -6px;
+     background-color: #ff6347;
+     color: white;
+     border-radius: 50%;
+     width: 18px;
+     height: 18px;
+     font-size: 0.75rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ /* Notification Form Styling */
+ .notification-form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 500;
+      margin: 10px 0;
+      display: block;
+      font-size: 0.9rem;
+      color: #34495E;
+    }
+
+    .upload-section input[type="text"], input[type="email"], textarea, select, 
+    .template-management input[type="text"], input[type="email"], textarea, select  {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .upload-section input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus, 
+    .template-management input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+      border-color: #3498DB;
+      outline: none;
+      box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .upload-section button, 
+    .template-management button,
+    .modal button {
+      width: auto; /* Reduced button width */
+      padding: 10px; /* Adjusted padding */
+      background-color: #3498DB;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 600;
+      margin-right: 10px; /* Spacing between buttons */
+    }
+
+    .upload-section button:hover, 
+    .template-management button:hover 
+    .modal button:hover {
+      background-color: #2980B9;
+    }
+
+    /* Template Management */
+    .template-management {
+      background-color: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+    }
+
+    .template-management h2 {
+      font-size: 1.5rem;
+    }
+
+    .template-list {
+      margin-top: 15px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .template-list li {
+      background-color: #f9f9f9;
+      padding: 10px 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .template-list li button {
+      padding: 6px 12px;
+      background-color: #e74c3c; /* Red for delete button */
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .template-list li button:hover {
+      background-color: #c0392b; /* Darker red on hover */
+    }
+
+    /* Flexbox for notification options */
+    .notification-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .notification-options div {
+      flex-grow: 1;
+    }
+
+    .notification-type {
+      margin-top: 20px;
+    }
+
+    .notification-type label {
+      display: inline-block;
+      margin-right: 15px;
+    }
+
+    .notification-type input[type="checkbox"] {
+      margin-right: 5px;
+      transform: scale(1.2);
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      .notification-options {
+        flex-direction: column;
+      }
+    }
+
+    .upload-section{
+        margin-top: 10px;
+    }
+
+/* Modal styling */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 60%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensures rounded corners apply to the whole table */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    color: #333; /* Dark text for readability */
+}
+
+th {
+    background-color: #3498DB; /* Blue tone for table header */
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f2f7fb; /* Light background for table cells */
+    word-break: break-word;
+}
+
+tr:nth-child(even) {
+    background-color: #e9f1f8; /* Alternating row color */
+}
+
+/* Hover effects */
+tr:hover {
+    background-color: #dceaf3;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <div class="container">
+        <nav>
+            <div class="logo">
+                <img src="logo.png" alt="Laspotech"/>
+            </div>
+                <a href="/admin">Dashboard</a>
+                <a href="/students">Students</a>
+                <a href="/upload">Upload Result</a>
+                <a href="/api/logout">Logout</a>
+        </nav>
+
+        <div class="content">
+            <header>
+
+                <div class="headerlogo">Computer Science Department</div>
+            
+                <div class="search-bar">
+                    <input type="text" placeholder="Search...">
+                </div>
+            
+                <div class="header-buttons">
+                    <button id="notificationBtn">
+                        <i class="fas fa-bell"></i> 
+                        <span class="notification-count">3</span>
+                    </button>
+                    <button id="settingsBtn">
+                        <i class="fas fa-cog"></i> 
+                    </button>
+                </div>
+
+            </header>
+
+            <div class="upload-section">
+              <div class="notification-form">
+                  <h2>Create Notification</h2>
+          
+                  <form id="notificationForm">
+                      <label for="template">Template:</label>
+                      <select id="template">
+                          <option value="" selected>Choose a Template (Optional)</option>
+                          <!-- Dynamically loaded templates -->
+                      </select>
+          
+                      <label for="subject">Subject:</label>
+                      <input type="text" id="subject" placeholder="Enter notification subject" required>
+          
+                      <label for="message">Message:</label>
+                      <textarea id="message" placeholder="Write your message here..." required></textarea>
+          
+                      <div class="notification-options">
+                          <div>
+                              <label for="recipientType">Send To:</label>
+                              <select id="recipientType">
+                                  <option value="" selected>Select Level</option>
+                                  <option value="individual">Individual Student</option>
+                                  <option value="level">All in Same Level</option>
+                                  <option value="department">All in Department</option>
+                              </select>
+                          </div>
+          
+                          <div>
+                              <label for="level">Level (If applicable):</label>
+                              <select id="level">
+                                  <option value="" selected>Select Level</option>
+                                  <option value="100">100</option>
+                                  <option value="200">200</option>
+                                  <option value="300">300</option>
+                                  <option value="400">400</option>
+                              </select>
+                          </div>
+                      </div>
+          
+                      <div class="notification-type">
+                          <label>Notification Type:</label><br>
+                          <input type="checkbox" id="sendEmail" name="sendEmail" value="email">
+                          <label for="sendEmail">Email</label>
+                          <input type="checkbox" id="sendSMS" name="sendSMS" value="sms" style="margin-left: 20px;">
+                          <label for="sendSMS">SMS</label>
+                      </div>
+          
+                      <div>
+                          <button type="submit">Send Notification</button>
+                          <button type="button" id="clearFields">Clear</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          
+              
+                  <!-- Template Management Section -->
+                  <div class="template-management">
+                    <h2>Manage Templates</h2>
+              
+                    <form id="templateForm">
+                      <label for="templateName">Template Name:</label>
+                      <input type="text" id="templateName" placeholder="Enter template name"  class="" required>
+              
+                      <label for="templateMessage">Template Message:</label>
+                      <textarea id="templateMessage" placeholder="Write your template message here..." required></textarea>
+              
+                      <button type="submit">Save Template</button>
+                    </form>
+              
+                    <ul class="template-list" id="templateList">
+                      <!-- Dynamically loaded template list -->
+                    </ul>
+                  </div>
+            </div>
+            
+<!-- Modal for Individual Option (select students with checkboxes) -->
+ <!-- Modal for Individual Selection -->
+    <div id="individualModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Select Students (Individual)</h3>
+            <label for="studentLevel">Select Level:</label>
+            <select id="studentLevel">
+                <option value="" selected>Select Level</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+            </select>
+
+            <table id="studentTable" class="modalTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Matric</th>
+                        <th>Email</th>
+                        <th>Phone No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+
+            <button id="confirmIndividualSelection">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Modal for All in Same Level -->
+    <div id="levelModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>All Students in the Same Level</h3>
+            <label for="levelSelect">Select Level:</label>
+            <select id="levelSelect">
+                <option value="" selected>Select Level</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+            </select>
+
+            <table id="levelStudentTable" class="modalTable">
+                <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Matric</th>
+                      <th>Email</th>
+                      <th>Phone No.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+
+            <button id="confirmLevelSelection">Confirm</button>
+        </div>
+    </div>
+
+   <!-- Modal for "Department" option -->
+<div id="departmentModal" class="modal">
+  <div class="modal-content">
+      <span class="close">&times;</span>
+      <table id="department-students-table" style="display: none;">
+          <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Matric Number</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+              </tr>
+          </thead>
+          <tbody id="department-students-body">
+              <!-- Student rows will be added here dynamically -->
+          </tbody>
+      </table>
+      <h4 style="margin: 20px;"> You are about to send this notification to all students in the COMUTER SCIENCE DEPARTMENT, COLLEGE OF BASIC SCIENCES.</h4>
+      <button id="confirm-selection-btn">Confirm Selection</button>
+  </div>
+</div>
+
+
+        </div><!--content-->
+  </div><!--container-->
+                                
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const templateForm = document.getElementById("templateForm");
+    const notificationForm = document.getElementById("notificationForm");
+    const templateSelect = document.getElementById("template");
+    const templateList = document.getElementById("templateList");
+    const subjectInput = document.getElementById("subject");
+    const messageInput = document.getElementById("message");
+    const levelInput = document.getElementById("level");
+
+    // Load templates from the server
+    async function loadTemplates() {
+        try {
+            const response = await fetch('/api/templates');
+            const data = await response.json();
+            if (data.success) {
+                // Clear existing options before loading new ones
+                templateSelect.innerHTML = `<option value="" selected>Choose a Template (Optional)</option>`;
+
+                data.templates.forEach(template => {
+                    // Add to select dropdown
+                    const option = document.createElement("option");
+                    option.value = template._id; // Use ID for easy identification
+                    option.textContent = template.name;
+                    templateSelect.appendChild(option);
+
+                    // Add to template list
+                    const listItem = document.createElement("li");
+                    listItem.textContent = template.name;
+                    listItem.appendChild(createDeleteButton(template._id));
+                    templateList.appendChild(listItem);
+                });
+            }
+        } catch (error) {
+            console.error("Error loading templates:", error);
+        }
+    }
+
+   // Handle template selection
+templateSelect.onchange = async (event) => {
+    const selectedTemplateId = event.target.value;
+    if (selectedTemplateId) {
+        try {
+            const response = await fetch(`/api/templates/${selectedTemplateId}`);
+            const data = await response.json();
+            if (data.success) {
+                // Load the selected template's message and other fields
+                messageInput.value = data.template.message; // Load the message
+                subjectInput.value = data.template.name;    // Load the name into the subject field
+            }
+        } catch (error) {
+            console.error("Error fetching template message:", error);
+        }
+    } else {
+        messageInput.value = ""; // Clear the message if no template is selected
+        subjectInput.value = "";  // Clear the subject if no template is selected
+    }
+};
+
+
+    // Create delete button for templates
+    function createDeleteButton(templateId) {
+        const button = document.createElement("button");
+        button.textContent = "Delete";
+        button.onclick = async () => {
+            if (confirm("Are you sure you want to delete this template?")) {
+                try {
+                    const response = await fetch(`/api/templates/${templateId}`, {
+                        method: 'DELETE',
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert(data.message);
+                        // Remove from the list
+                        button.parentElement.remove();
+                        // Remove from select dropdown
+                        Array.from(templateSelect.options).forEach(option => {
+                            if (option.value === templateId) {
+                                option.remove();
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error deleting template:", error);
+                }
+            }
+        };
+        return button;
+    }
+
+    // Handle template submission
+    templateForm.onsubmit = async (event) => {
+        event.preventDefault();
+        const name = document.getElementById("templateName").value;
+        const message = document.getElementById("templateMessage").value;
+
+        try {
+            const response = await fetch('/api/templates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, message }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert(data.message);
+                loadTemplates(); // Refresh the template list
+                templateForm.reset(); // Clear the form
+            }
+        } catch (error) {
+            console.error("Error saving template:", error);
+        }
+    };
+
+    // Handle notification form submission
+    notificationForm.onsubmit = async (event) => {
+        event.preventDefault();
+        const subject = subjectInput.value;
+        const message = messageInput.value;
+        const recipientType = document.getElementById("recipientType").value;
+        const level = levelInput.value;
+        const sendEmail = document.getElementById("sendEmail").checked;
+        const sendSMS = document.getElementById("sendSMS").checked;
+
+        // Logic for sending the notification would go here
+
+        alert("Notification sent!"); // Simulated response
+    };
+
+    // Load templates on initial page load
+    loadTemplates();
+
+    // Clear form button functionality
+    document.getElementById("clearFields").onclick = () => {
+        notificationForm.reset();
+    };
+});
+
+  </script>
+  
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const recipientType = document.getElementById("recipientType");
+    const individualModal = document.getElementById("individualModal");
+    const levelModal = document.getElementById("levelModal");
+    const departmentModal = document.getElementById("departmentModal");
+    const studentLevel = document.getElementById("studentLevel");
+    const levelSelect = document.getElementById("levelSelect");
+    const studentTableBody = document.querySelector("#studentTable tbody");
+    const levelStudentTableBody = document.querySelector("#levelStudentTable tbody");
+
+    const closeButtons = document.querySelectorAll(".close");
+    const confirmIndividualSelection = document.getElementById("confirmIndividualSelection");
+    const confirmLevelSelection = document.getElementById("confirmLevelSelection");
+    const confirmDepartmentSelection = document.getElementById("confirmDepartmentSelection");
+
+    let selectedStudents = [];
+    let currentRecipientType = "";  // To store the currently selected recipient type
+
+    // Open the correct modal based on recipientType selection
+    recipientType.addEventListener("change", function () {
+        const value = this.value;
+
+        // Reset previous selections
+        resetModals();
+
+        if (value === "individual") {
+            openModal(individualModal);
+            currentRecipientType = "individual";
+        } else if (value === "level") {
+            openModal(levelModal);
+            currentRecipientType = "level";
+        } else if (value === "department") {
+            openModal(departmentModal);
+            currentRecipientType = "department";
+        }
+    });
+
+    // Reopen modal if the same recipient type is clicked
+    recipientType.addEventListener("click", function () {
+        const value = this.value;
+        if (value === currentRecipientType) {
+            if (value === "individual") {
+                openModal(individualModal);
+            } else if (value === "level") {
+                openModal(levelModal);
+            } else if (value === "department") {
+                openModal(departmentModal);
+            }
+        }
+    });
+
+    // Reset all modals and selections
+    function resetModals() {
+        // Hide all modals
+        individualModal.style.display = "none";
+        levelModal.style.display = "none";
+        departmentModal.style.display = "none";
+        
+        // Clear the student table contents
+        studentTableBody.innerHTML = "";
+        levelStudentTableBody.innerHTML = "";
+
+        // Reset dropdowns
+        studentLevel.value = "";
+        levelSelect.value = "";
+
+        // Clear selected students
+        selectedStudents = [];
+    }
+
+    // Open modal function
+    function openModal(modal) {
+        modal.style.display = "block";
+    }
+
+    // Close modal function
+    closeButtons.forEach(closeBtn => {
+        closeBtn.addEventListener("click", function () {
+            const modal = this.closest(".modal");
+            modal.style.display = "none";
+
+            // Reset table if close without confirmation
+            resetModals();
+        });
+    });
+
+    // Fetch students for the "Individual" option based on level
+    // Fetch students for the "Individual" option based on level
+studentLevel.addEventListener("change", async function () {
+    const level = this.value;
+    if (level) {
+        try {
+            const response = await fetch(`/api/students/level/${level}`);
+            const data = await response.json();
+            if (data.success) {
+                studentTableBody.innerHTML = "";
+                data.students.forEach(student => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><input type="checkbox" data-name="${student.name}" data-matric_number="${student.matric_number}" data-email="${student.email}" data-phone="${student.phone}"></td>
+                        <td>${student.name}</td>
+                        <td>${student.matric_number}</td>
+                        <td>${student.email}</td>
+                        <td>${student.phone}</td>
+                    `;
+                    studentTableBody.appendChild(row);
+                });
+            }
+        } catch (error) {
+            console.error("Error fetching students:", error);
+        }
+    }
+});
+
+// Handle individual confirmation
+confirmIndividualSelection.addEventListener("click", function () {
+    selectedStudents = [];
+    document.querySelectorAll("#studentTable input:checked").forEach(checkbox => {
+        selectedStudents.push({
+            name: checkbox.dataset.name,
+            email: checkbox.dataset.email,  // Ensure correct email is captured
+            phone: checkbox.dataset.phone
+        });
+    });
+    console.log("Selected students:", selectedStudents);
+    individualModal.style.display = "none";
+});
+
+levelSelect.addEventListener("change", async function () {
+    const level = this.value;
+    if (level) {
+        try {
+            const response = await fetch(`/api/students/level/${level}`);  // Adjust API route if necessary
+            const data = await response.json();
+            if (data.success) {
+                levelStudentTableBody.innerHTML = "";  // Clear any previous data
+                data.students.forEach(student => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${student.name}</td>
+                        <td>${student.matric_number}</td>
+                        <td>${student.email}</td>
+                        <td>${student.phone}</td>
+                    `;
+                    levelStudentTableBody.appendChild(row);
+                });
+            }
+        } catch (error) {
+            console.error("Error fetching students for level:", error);
+        }
+    }
+});
+
+
+    // Handle level confirmation
+confirmLevelSelection.addEventListener("click", function () {
+    selectedStudents = [];
+    document.querySelectorAll("#levelStudentTable tbody tr").forEach(row => {
+        const cells = row.querySelectorAll("td");
+        selectedStudents.push({
+            name: cells[0].textContent,
+            email: cells[2].textContent,  // Ensure the correct email column is selected
+            phone: cells[3].textContent
+        });
+    });
+    console.log("All students in level:", selectedStudents);
+    levelModal.style.display = "none";
+});
+
+
+ // Function to fetch students and display them
+ function fetchDepartmentStudents() {
+            const tbody = document.getElementById('department-students-body');
+            tbody.innerHTML = '';  // Clear any existing rows
+
+            // Fetch students from the server
+            fetch('/api/students')  // Use the updated route from the server
+                .then(response => response.json())  // Convert the response to JSON
+                .then(data => {
+                    if (data.success) {
+                        // Iterate through the students and add them to the table
+                        const students = data.students;
+                        students.forEach(student => {
+                            const row = document.createElement('tr');
+
+                            // Add the student details into the row
+                            row.innerHTML = `
+                                <td>${student.name}</td>
+                                <td>${student.matric_number}</td>
+                                <td>${student.email}</td>
+                                <td>${student.phone}</td>
+                            `;
+
+                            // Append the row to the table body
+                            tbody.appendChild(row);
+                        });
+                    } else {
+                        console.error('Error: Unable to fetch students');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching students:', error);
+                });
+        }
+
+
+    // Ensure this function is triggered when the "department" option is selected
+document.getElementById('recipientType').addEventListener('change', function () {
+    const value = this.value;
+
+    if (value === 'department') {
+        console.log('Department option selected, fetching students...');
+        fetchDepartmentStudents();  // Fetch and display department students
+        openModal(departmentModal);
+    }
+});
+
+    // Modal close button functionality
+    document.querySelector('.close').addEventListener('click', () => {
+        document.getElementById('departmentModal').style.display = "none";
+    });
+
+      // Confirm button: logs selected students and closes modal
+document.getElementById('confirm-selection-btn').addEventListener('click', () => {
+    const tbody = document.getElementById('department-students-body');
+    const rows = tbody.querySelectorAll('tr');  // Get all rows from the table body
+
+    // Loop through each row and add the student data to selectedStudents array
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        
+        // Get the student data from the cells
+        const student = {
+            name: cells[0].textContent,
+            matric_number: cells[1].textContent,
+            email: cells[2].textContent,
+            phone: cells[3].textContent
+        };
+
+        // Add the student to the selectedStudents array
+        selectedStudents.push(student);
+    });
+
+    console.log('All department students selected:', selectedStudents);
+
+    alert('All department students selected successfully');
+    document.getElementById('departmentModal').style.display = "none";  // Close the modal
+});
+
+    
+    // Form submission
+    document.getElementById('notificationForm').onsubmit = async function(event) {
+    event.preventDefault();
+
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    const sendEmail = document.getElementById('sendEmail').checked;
+    const sendSMS = document.getElementById('sendSMS').checked;
+
+    const recipients = selectedStudents.map(student => ({
+        email: student.email,
+        phone: student.phone
+    }));
+
+    const batchSize = 5;  // Set the batch size to 5
+const delay = 60000;  // Set delay to 1 minute (60000 ms)
+
+async function sendBatchEmails(batch) {
+    try {
+        const response = await fetch('/send-notification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                subject,
+                message,
+                sendEmail,
+                sendSMS,
+                recipients: batch  // Send only the batch
+            })
+        });
+
+        const result = await response.json();
+        console.log('Batch notification response:', result);
+        return result;
+    } catch (error) {
+        console.log('Error in sending batch notification:', error);
+    }
+}
+
+for (let i = 0; i < recipients.length; i += batchSize) {
+    const batch = recipients.slice(i, i + batchSize);  // Slice a batch of recipients
+    const result = await sendBatchEmails(batch);  // Send each batch one at a time
+
+    if (result && result.error) {
+        alert(`Error in sending notification for batch starting at recipient ${i + 1}`);
+        break;
+    }
+
+    // Add delay between batches
+    if (i + batchSize < recipients.length) {
+        console.log(`Waiting ${delay / 1000} seconds before sending the next batch...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+}
+
+alert('Email Sent successfully to all selected students');
+    };
+
+
+    // Reset all forms, modals, and dropdowns on page load
+    const forms = document.querySelectorAll("form");
+    forms.forEach(form => form.reset());
+    const modals = document.querySelectorAll(".modal");
+    modals.forEach(modal => {
+        modal.style.display = "none";
+    });
+
+    const studentLevelDropdown = document.getElementById("studentLevel");
+    if (studentLevelDropdown) {
+        studentLevelDropdown.selectedIndex = 0; // Reset to default option
+    }
+
+    selectedStudents = [];
+    modalOpen = false;
+
+    console.log("All forms, modals, and dropdowns reset on page load.");
+});
+
+ </script>
+ 
+</body>
+</html>
