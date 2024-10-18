@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 // MongoDB connection URI (use your own MongoDB URI)
-const mongoURI = 'your_mongodb_connection_string_here';
+const mongoURI = MONGODB_URI;
 
 // Create storage engine
 const storage = new GridFsStorage({
