@@ -408,7 +408,20 @@
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 1.5rem;
-            height: 300px;
+            min-height: 300px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .chart-card canvas {
+            flex: 1;
+            min-height: 250px;
+            width: 100% !important;
+            max-width: 100% !important;
         }
 
         .chart-title {
@@ -653,7 +666,7 @@
             }
 
             .chart-card {
-                height: 350px;
+                min-height: 350px;
             }
         }
 
@@ -691,7 +704,7 @@
             }
 
             .chart-card {
-                height: 300px;
+                min-height: 300px;
                 padding: 1rem;
             }
 
@@ -737,7 +750,7 @@
 
             .chart-card {
                 padding: 0.75rem;
-                height: 280px;
+                min-height: 280px;
             }
         }
 
@@ -823,7 +836,7 @@
     <nav class="top-nav">
         <div class="nav-brand">
             <div class="nav-logo">
-                <img src="logo.png" alt="LASPOTECH Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='L';">
+                <img src="/assets/logo.png" alt="LASPOTECH Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='L';">
             </div>
             <div class="nav-title">LASPOTECH</div>
         </div>
@@ -842,7 +855,7 @@
                 <i class="fas fa-bars"></i>
             </button>
             <button class="nav-btn" id="themeToggle">
-                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
             </button>
             <button class="nav-btn active" id="notificationBtn">
                 <i class="fas fa-bell"></i>
@@ -1164,15 +1177,24 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    // Safely handle data with fallbacks for undefined values
+                    const safeData = {
+                        totalStudents: data.totalStudents || 0,
+                        level100: data.level100 || 0,
+                        level200: data.level200 || 0,
+                        level300: data.level300 || 0,
+                        level400: data.level400 || 0
+                    };
+
                     // Animate data updates with sophisticated timing
-                    setTimeout(() => animateValue('totalStudents', 0, data.totalStudents, 2000), 300);
-                    setTimeout(() => animateValue('level100', 0, data.level100, 1500), 500);
-                    setTimeout(() => animateValue('level200', 0, data.level200, 1500), 700);
-                    setTimeout(() => animateValue('level300', 0, data.level300, 1500), 900);
-                    setTimeout(() => animateValue('level400', 0, data.level400, 1500), 1100);
+                    setTimeout(() => animateValue('totalStudents', 0, safeData.totalStudents, 2000), 300);
+                    setTimeout(() => animateValue('level100', 0, safeData.level100, 1500), 500);
+                    setTimeout(() => animateValue('level200', 0, safeData.level200, 1500), 700);
+                    setTimeout(() => animateValue('level300', 0, safeData.level300, 1500), 900);
+                    setTimeout(() => animateValue('level400', 0, safeData.level400, 1500), 1100);
 
                     const levels = ['100 Level', '200 Level', '300 Level', '400 Level'];
-                    const studentsPerLevel = [data.level100, data.level200, data.level300, data.level400];
+                    const studentsPerLevel = [safeData.level100, safeData.level200, safeData.level300, safeData.level400];
 
                     // Modern Doughnut Chart
                     const pieChartConfig = {
@@ -1321,18 +1343,31 @@
             }
         }
 
-        // Smooth number animation
+        // Smooth number animation with proper handling for zero values
         function animateValue(id, start, end, duration) {
             const element = document.getElementById(id);
-            const range = end - start;
+            
+            // Handle zero or undefined values
+            if (end === 0 || end === null || end === undefined || isNaN(end)) {
+                element.textContent = '0';
+                return;
+            }
+            
+            const range = Math.abs(end - start);
+            if (range === 0) {
+                element.textContent = end;
+                return;
+            }
+            
             const increment = end > start ? 1 : -1;
-            const stepTime = Math.abs(Math.floor(duration / range));
+            const stepTime = Math.max(1, Math.floor(duration / range));
             let current = start;
             
             const timer = setInterval(() => {
                 current += increment;
                 element.textContent = current;
-                if (current === end) {
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = end;
                     clearInterval(timer);
                 }
             }, stepTime);
@@ -1365,9 +1400,9 @@
             function updateThemeIcon(theme) {
                 const icon = themeToggle.querySelector('i');
                 if (theme === 'light') {
-                    icon.className = 'fas fa-moon';
-                } else {
                     icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
                 }
             }
 
@@ -1425,5 +1460,5 @@
         // Auto-refresh every 5 minutes
         setInterval(fetchDashboardData, 300000);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c5a7fcc60e768b',t:'MTc1NzQxMDExNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c5da92776e6525',t:'MTc1NzQxMjE4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
